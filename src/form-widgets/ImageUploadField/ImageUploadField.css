@@ -1,0 +1,40 @@
+div.image-field {
+    display: flex;
+    flex-direction: row;
+    padding: 5px
+}
+
+    div.image-field > * {
+        margin: 5px;
+    }
+
+    div.image-field input {
+        display: none;
+    }
+
+    div.image-field img {
+        display: inline-block;  /* force nonzero size when image is 404 */
+        object-fit: contain;
+    }
+
+    div.image-field img, div.image-field div.empty {
+        border: 1px solid #666;
+        cursor: pointer;
+    }
+
+        div.image-field img.selected {
+            border: 1px solid blue;
+            box-shadow: rgba(0, 0, 255, 0.3) 3px 3px 3px;
+        }
+
+    div.image-field div.empty {
+        border: 1px solid #666;
+    }
+
+        div.image-field div.empty p {
+            /* http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/ */
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+        }
