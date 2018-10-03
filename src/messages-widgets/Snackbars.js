@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from '@material-ui/icons/Close';
 
-import registry from '../../registry';
+import registry from '../registry';
 
 
 const styles = theme => ({
