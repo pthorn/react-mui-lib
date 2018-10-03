@@ -27,8 +27,7 @@ class TextField extends React.Component {
             path,
             type,
             label,
-            fullWidth = true,
-            mediumWidth = false,
+            width = 'full',
             multiLine = false,
             classes  // injected by withStyles()
         } = c.props;
@@ -51,14 +50,14 @@ class TextField extends React.Component {
                             disabled={!editable}
                             margin="normal"
                             className={classNames({
-                                [classes.fullWidth]: fullWidth && !mediumWidth,
-                                [classes.mediumWidth]: mediumWidth
+                                [classes.fullWidth]: width === 'full',
+                                [classes.mediumWidth]: width === 'medium'
                             })} >
             <InputLabel htmlFor="name-error">
                 {label}
                 </InputLabel>
             <Input type={type}
-                   fullWidth={fullWidth}
+                   fullWidth={width === 'full'}
                    multiline={multiLine}
                    value={model.getViewValue()}
                    onChange={c.onChange.bind(c)} />
@@ -78,8 +77,7 @@ TextField.propTypes = {
     path: PropTypes.string.isRequired,
     type: PropTypes.string,
     label: PropTypes.string,
-    fullWidth:  PropTypes.bool,
-    mediumWidth: PropTypes.bool,
+    width: PropTypes.oneOf(['medium', 'full']),
     multiLine: PropTypes.bool
 };
 
