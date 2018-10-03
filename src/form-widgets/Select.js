@@ -6,16 +6,31 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import MuiSelect from '@material-ui/core/Select';
 import MenuItem from "@material-ui/core/MenuItem";
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import { errors } from './errors';
+
+
+const styles = {
+    mediumWidth: {
+        width: '250px'
+    },
+    fullWidth: {
+        width: '100%'
+    }
+};
 
 
 class Select extends React.Component {
     render() {
         const c = this;
         const {
-            path, options, label,
-            showEmptyOption = true, emptyOptionLabel = ""
+            path,
+            options,
+            label,
+            showEmptyOption = true,
+            emptyOptionLabel = "",
+            classes  // injected by withStyles()
         } = c.props;
         const { controller } = c.context;
         const model = controller.getModel(path);
@@ -33,7 +48,8 @@ class Select extends React.Component {
         return <FormControl disabled={!editable}
                             error={!valid}
                             fullWidth={true}
-                            margin="normal">
+                            margin="normal"
+                            className={classes.mediumWidth}>
             <InputLabel htmlFor="name-error">
                 {label}
             </InputLabel>
@@ -77,4 +93,4 @@ Select.contextTypes = {
     controller: PropTypes.object
 };
 
-export default Select;
+export default withStyles(styles)(Select);
