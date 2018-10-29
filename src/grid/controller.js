@@ -144,8 +144,6 @@ class GridController extends BaseController {
         } else {
             this.setOrder(column, 'asc');
         }
-
-        this._request();
     }
 
     //
