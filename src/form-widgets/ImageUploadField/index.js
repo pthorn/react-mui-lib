@@ -57,9 +57,14 @@ class Empty extends React.Component {
 class Image extends React.Component {
     render() {
         const c = this;
-        const { parsed_id, config, onClick } = c.props;
+        const { parsed_id, image_data, config, onClick } = c.props;
 
-        const src = image_url(parsed_id, config.prefix, config.thumb_variant);
+        let src;
+        if (image_data) {  // image_data has priority over parsed_id
+            src = image_data;
+        } else {
+            src = image_url(parsed_id, config.prefix, config.thumb_variant);
+        }
 
         return <img src={src}
                     width={config.thumb_size[0]}
@@ -103,8 +108,11 @@ class ImageField extends React.Component {
                 }
             }
 
-            if (parsed_id) {
+            if (parsed_id || c.state.image_data) {
+                // display either server image (parsed_id) or local image
+                // selected for upload (image_data)
                 return <Image parsed_id={parsed_id}
+                              image_data={c.state.image_data}
                               config={c.config}
                               onClick={() => c.refs.file_input.triggerFileSelect()}/>;
             } else {
@@ -117,11 +125,7 @@ class ImageField extends React.Component {
                             error={!valid}>
             <FormLabel>{label}</FormLabel>
                 <div className="image-field">
-                    {c.state.image_data && <img src={c.state.image_data}
-                                                width={c.config.thumb_size[0]}
-                                                height={c.config.thumb_size[1]}
-                                                alt=""/>}
-                    {!c.state.image_data && image()}
+                    {image()}
                     {valid ? null : errors(model)}
                     <FileInput ref="file_input"
                                multiple={false}
