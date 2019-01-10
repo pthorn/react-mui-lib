@@ -6,7 +6,10 @@ class FormDelegate {
         this.controller = controller;
     }
 
-    didSubmit(json_response) {
+    /**
+     * :param action: <SubmitButton action="action"/>
+     */
+    didSubmit(json_response, action) {
         // const c = this.controller;
         //
         // // navigate to edit url
