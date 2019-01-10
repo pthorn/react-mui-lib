@@ -12,20 +12,26 @@ class ColumnHeader extends React.Component {
 
         const key = col_config.sort_key || col_config.key;
 
+        // column is sortable if key or sort_key is provided and sortable: false is not set
+        const sortable = col_config.sortable !== false && key !== null && key !== undefined;
+
+        // text to display in the header
+        const label = col_config.label || key;
+
+        if (!sortable) {
+            return <TableCell>{label}</TableCell>;
+        }
+
         return <TableCell>
             <TableSortLabel active={order_col === key}
                             direction={order_dir}
                             onClick={c.onClick.bind(c, key)}>
-                {col_config.label || key}
+                {label}
             </TableSortLabel>
         </TableCell>;
     }
 
     onClick(column) {
-        if (!column) {
-            return;
-        }
-
         const { controller } = this.props;
         controller.setOrderColumn(column);
     }
