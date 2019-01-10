@@ -34,7 +34,7 @@ class FormReducer extends BaseReducer {
             dirty: false,
             submitted: false,
             data: this.controller.getModel(state.data, "").reduce(api => {
-                api.setModelValue(action.data);
+                api.setNetworkValue(action.data);
 
                 const reduceAfterLoaded = this.controller.options.reduceAfterLoaded;
                 if (reduceAfterLoaded) {

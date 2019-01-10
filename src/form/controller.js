@@ -159,11 +159,11 @@ class FormController extends BaseController {
             rest_client.updateEntityForId(
                 c.entity_name,
                 c.state.entity_id,
-                model.getModelValue()  // TODO network value
+                model.getNetworkValue()
             ) :
             rest_client.createEntity(
                 c.entity_name,
-                model.getModelValue()  // TODO network value
+                model.getNetworkValue()
             );
 
         return promise.then(
