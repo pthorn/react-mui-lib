@@ -20,6 +20,26 @@ class GridController extends BaseController {
     }
 
     //
+    // API for widgets
+    //
+
+    hasData() {
+        return this.state.mode === modes.DATA || this.state.mode === modes.DATA_OLD;
+    }
+
+    isLoading() {
+        return this.state.mode === modes.LOADING;
+    }
+
+    hasError() {
+        return this.state.mode === modes.LOAD_ERROR;
+    }
+
+    getRowsForDisplay() {
+        return this.state.rows;
+    }
+
+    //
     // pagination
     //
 

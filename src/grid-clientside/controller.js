@@ -20,6 +20,10 @@ class ClientsideGridController extends BaseController {
         this.options = opts;
     }
 
+    //
+    // API for widgets
+    //
+
     hasData() {
         return this.state.mode === modes.DATA || this.state.mode === modes.DATA_OLD;
     }

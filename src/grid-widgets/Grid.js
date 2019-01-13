@@ -55,7 +55,20 @@ class Grid extends React.Component {
             onRowCheckboxChanged,
             onHeaderCheckboxChanged
         } = this.props;
-        const { rows } = controller.state;
+
+        if (controller.isLoading()) {
+            return <h2>Загрузка...</h2>;
+        }
+
+        if (controller.hasError()) {
+            return <h2>Ошибка загрузки</h2>;
+        }
+
+        if (!controller.hasData()) {
+            return null; // TOSO ???
+        }
+
+        const rows = controller.getRowsForDisplay();
 
         return <Table padding={padding}>
             <TableHead>
