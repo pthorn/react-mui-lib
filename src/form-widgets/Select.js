@@ -47,7 +47,7 @@ class Select extends React.Component {
         // - <FormHelperText/> not just for errors
         return <FormControl disabled={!editable}
                             error={!valid}
-                            fullWidth={true}
+                            fullWidth={false}
                             margin="normal"
                             className={classes.mediumWidth}>
             <InputLabel htmlFor="name-error">
