@@ -84,7 +84,7 @@ class ClientsideGridController extends BaseController {
     //
 
     load() {
-        this._request();
+        return this._request();
     }
 
     needsRefresh() {
@@ -209,7 +209,7 @@ class ClientsideGridController extends BaseController {
             type: 'LOADING'
         });
 
-        registry.get('rest_client').getList(
+        return registry.get('rest_client').getList(
             this.name,
             {
             //     start: (state.current_page - 1) * state.rows_per_page,

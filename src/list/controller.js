@@ -34,7 +34,7 @@ class ListController extends BaseController {
             type: 'LOADING'
         });
 
-        registry.get('rest_client').getList(
+        return registry.get('rest_client').getList(
             this.options.entity_name, {
                 filters: this.options.filters,
                 order: {
