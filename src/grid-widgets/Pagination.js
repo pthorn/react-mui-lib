@@ -24,12 +24,15 @@ class Pagination extends React.Component {
                                  labelDisplayedRows={({from, to, count}) => `${from}-${to} из ${count}`}
                                  labelRowsPerPage={'Показывать:'}
                                  onChangePage={c.onClickPage.bind(c)}
-                                 onChangeRowsPerPage={c.onSetRowsPerPage.bind(c)}/>
-                <Tooltip title="Обновить">
-                    <IconButton onClick={() => controller._request()}>
-                        <Icon>refresh</Icon>
-                    </IconButton>
-                </Tooltip>
+                                 onChangeRowsPerPage={c.onSetRowsPerPage.bind(c)}>
+                </TablePagination>
+                <td>
+                    <Tooltip title="Обновить">
+                        <IconButton onClick={() => controller._request()}>
+                            <Icon>refresh</Icon>
+                        </IconButton>
+                    </Tooltip>
+                </td>
             </TableRow>
         </TableFooter>;
     }
