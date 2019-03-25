@@ -18,7 +18,7 @@ class SubmitButton extends React.Component {
         const l = label ? label :
             (controller.state.entity_id ? updateLabel : createLabel);
 
-        return <Button variant="raised"
+        return <Button variant="contained"
                        color="primary"
                        disabled={!controller.isEditable()}
                        onClick={c.onClick.bind(c)}
