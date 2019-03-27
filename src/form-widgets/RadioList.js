@@ -35,6 +35,7 @@ class RadioList extends React.Component {
         });
 
         return <FormControl component="fieldset"
+                            margin="normal"
                             className={'classes.formControl'}
                             disabled={!editable}
                             error={!valid}>
