@@ -5,6 +5,10 @@ import PropTypes from 'prop-types';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from  '@material-ui/core/Icon';
+import Tooltip from '@material-ui/core/Tooltip';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import { parse_image_id, image_url } from './utils';
 import { errors } from '../errors';
@@ -15,11 +19,12 @@ import './ImageUploadField.css';
 class FileInput extends React.Component {
     render() {
         const c = this;
-        const { multiple } = c.props;
+        const { config } = c.props;
 
+        // multiple={config.multiple}
         return <input type="file"
-            accept="image/*"
-            multiple={multiple}
+            accept={config.accept}
+            multiple={false}
             ref="fileInput"
             onChange={c.onChange.bind(c)} />;
     }
@@ -40,38 +45,123 @@ class FileInput extends React.Component {
 }
 
 
-class Empty extends React.Component {
-    render() {
-        const c = this;
-        const { config, onClick } = c.props;
-
-        return <div className="empty"
-                    style={{width: config.thumb_size[0], height: config.thumb_size[1]}}
-                    onClick={onClick}>
-            <p>Загрузить изображение</p>
-        </div>;
-    }
+function Empty({ config, onClick }) {
+    return <div className="empty"
+                style={{width: config.thumb_size[0], height: config.thumb_size[1]}}
+                onClick={onClick}>
+        <p>Загрузить файл</p>
+    </div>;
 }
 
 
-class Image extends React.Component {
-    render() {
-        const c = this;
-        const { parsed_id, image_data, config, onClick } = c.props;
-
-        let src;
-        if (image_data) {  // image_data has priority over parsed_id
-            src = image_data;
-        } else {
-            src = image_url(parsed_id, config.prefix, config.thumb_variant);
-        }
-
-        return <img src={src}
-                    width={config.thumb_size[0]}
-                    height={config.thumb_size[1]}
-                    alt=""
-                    onClick={onClick} />
+const ImagePreview = withStyles({
+    container: {
+        display: 'flex',
+        alignItems: 'start'
+    },
+    img: {
+        display: 'inline-block',  // force nonzero size when image is 404
+        objectFit: 'contain',
+        border: '1px solid #666',
+        cursor: 'pointer'
+    },
+    buttons: {
+        width: '48px'
     }
+})(function ImagePreview({ parsed_id, data, config, onDisplayLarge, onReplace, onDelete, classes }) {
+    let src;
+    if (data) {
+        // local preview
+        src = data;
+    } else {
+        // remote preview
+        src = image_url(parsed_id, config.prefix, config.thumb_variant);
+    }
+
+    return <div className={classes.container}>
+        <img src={src}
+            width={config.thumb_size[0]}
+            height={config.thumb_size[1]}
+            alt=""
+            className={classes.img}
+            onClick={onDisplayLarge} />
+        <div className={classes.buttons}>
+            <Tooltip title="Загрузить другой файл">
+                <IconButton onClick={onReplace}>
+                    <Icon>edit</Icon>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Удалить файл">
+                <IconButton onClick={onDelete}>
+                    <Icon>delete</Icon>
+                </IconButton>
+            </Tooltip>
+        </div>
+    </div>;
+});
+
+
+const AudioPreview = withStyles({
+    container: {
+        display: 'flex',
+        alignItems: 'start'
+    },
+    buttons: {
+    }
+})(function AudioPreview({ parsed_id, data, config, onReplace, onDelete, classes }) {
+    let src;
+    if (data) {
+        // local preview
+        src = data;
+    } else {
+        // remote preview
+        src = image_url(parsed_id, config.prefix); // TODO , config.thumb_variant);
+    }
+
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source
+    // <audio> does not update its UI when <source src> is changed!
+    //   https://github.com/facebook/react/issues/9447
+
+    return <div className={classes.container}>
+        <audio controls
+               preload="metadata"
+               src={src}
+               style={{width: '300px'}}>
+            Your browser does not support the audio element.
+        </audio>
+        <div className={classes.buttons}>
+            <Tooltip title="Загрузить другой файл">
+                <IconButton onClick={onReplace}>
+                    <Icon>edit</Icon>
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Удалить файл">
+                <IconButton onClick={onDelete}>
+                    <Icon>delete</Icon>
+                </IconButton>
+            </Tooltip>
+        </div>
+    </div>;
+});
+
+
+function Preview({ parsed_id, data, config, onDisplayLarge, onReplace, onDelete }) {
+    let PreviewImpl;
+    if (config.type === 'audio') {
+        PreviewImpl = AudioPreview;
+    } else if (config.type === 'image') {
+        PreviewImpl = ImagePreview;
+    } else {
+        // TODO ?
+    }
+
+    return <PreviewImpl parsed_id={parsed_id}
+                        data={data}
+                        config={config}
+                        onDisplayLarge={onDisplayLarge}
+                        onReplace={onReplace}
+                        onDelete={onDelete} />;
 }
 
 
@@ -111,10 +201,18 @@ class ImageField extends React.Component {
             if (parsed_id || c.state.image_data) {
                 // display either server image (parsed_id) or local image
                 // selected for upload (image_data)
-                return <Image parsed_id={parsed_id}
-                              image_data={c.state.image_data}
-                              config={c.config}
-                              onClick={() => c.refs.file_input.triggerFileSelect()}/>;
+                return <Preview parsed_id={parsed_id}
+                                data={c.state.image_data}
+                                config={c.config}
+                                onDisplayLarge={() => null}
+                                onReplace={() => c.refs.file_input.triggerFileSelect()}
+                                onDelete={() => {
+                                    controller.valueChanged(path, '');
+                                    controller.removeFileToUpload(path);
+                                    c.setState({
+                                        image_data: null
+                                    });
+                                }} />;
             } else {
                 return <Empty config={c.config}
                               onClick={() => c.refs.file_input.triggerFileSelect()}/>;
@@ -128,7 +226,7 @@ class ImageField extends React.Component {
                     {image()}
                     {valid ? null : errors(model)}
                     <FileInput ref="file_input"
-                               multiple={false}
+                               config={c.config}
                                onFileSelected={c.onFileSelected.bind(c)} />
                 </div>
         </FormControl>;
@@ -182,18 +280,35 @@ class ImageField extends React.Component {
     init(props) {
         const { config } = props;
 
+        const get_accept = type => {
+            if (type === 'image')
+                return 'image/*';
+            else if (type === 'audio')
+                return 'audio/*';
+            else
+                return '*/*';
+        }
+
         this.config = _.extend({
+            type:           'image',  // file, image, audio
+        }, config);
+
+        this.config = _.extend({
+            accept:          get_accept(this.config.type),
+
+            // upload parameters
             prefix:         '/store',
             category:       'images',
+            file_param:     'file',
+            upload_params:  {},
+
+            // preview
             thumb_size:     [125, 125],
             thumb_variant:  '125x125',
             large_variant:  undefined,
 
-            upload_params:  {},
-            file_param:     'file',
-
             enable_delete:  true
-        }, config);
+        }, this.config);
     }
 
     componentWillMount() {
