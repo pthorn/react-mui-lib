@@ -29,7 +29,8 @@ class TextField extends React.Component {
             label,
             width = 'full',
             multiLine = false,
-            classes  // injected by withStyles()
+            classes,  // injected by withStyles()
+            ...rest
         } = c.props;
         const controller = c.context.controller;
         const model = controller.getModel(path);
@@ -60,7 +61,8 @@ class TextField extends React.Component {
                    fullWidth={width === 'full'}
                    multiline={multiLine}
                    value={model.getViewValue()}
-                   onChange={c.onChange.bind(c)} />
+                   onChange={c.onChange.bind(c)}
+                   {...rest} />
             {valid ? null : errors(model)}
         </FormControl>
     }
