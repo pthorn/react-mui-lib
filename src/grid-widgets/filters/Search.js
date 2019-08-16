@@ -19,6 +19,16 @@ const SmallIconButton = withStyles({
 })(IconButton);
 
 
+const styles = {
+    root: {
+        marginRight: '16px'
+    },
+    input: {
+        fontSize: '0.85rem'
+    }
+};
+
+
 class Search extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +48,8 @@ class Search extends React.Component {
                    onChange={c.onChange.bind(c)}
                    inputProps={{
                        onKeyDown: c.onKeyDown.bind(c)
-                   }}/>
+                   }}
+                   className={classes.input} />
                 <SmallIconButton onClick={c.onApply.bind(c)}
                             disabled={!value}>
                     <SearchIcon/>
@@ -87,8 +98,4 @@ Search.propTypes = {
     classes: PropTypes.object
 };
 
-export default withStyles({
-    root: {
-        marginRight: '16px'
-    }
-})(Search);
+export default withStyles(styles)(Search);

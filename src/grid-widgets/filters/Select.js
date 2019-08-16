@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 
 import MuiSelect from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles } from '@material-ui/core/styles';
+
+
+const styles = {
+    input: {
+        fontSize: '0.85rem'
+    }
+};
 
 
 class Select extends React.Component {
@@ -18,7 +26,7 @@ class Select extends React.Component {
 
     render() {
         const c = this;
-        const { options, label } = c.props;
+        const { options, label, classes } = c.props;
         let { value } = c.state;
 
         // controller.getFilter() returns undefined when no filter is set
@@ -26,7 +34,8 @@ class Select extends React.Component {
 
         return <MuiSelect displayEmpty={true}
                           value={value}
-                          onChange={c.onChange.bind(c)}>
+                          onChange={c.onChange.bind(c)}
+                          className={classes.input}>
             <MenuItem key="" value="">
                 {label}
             </MenuItem>
@@ -63,5 +72,4 @@ Select.propTypes =  {
     options: PropTypes.array.isRequired
 };
 
-
-export default Select;
+export default withStyles(styles)(Select);
