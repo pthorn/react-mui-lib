@@ -17,6 +17,9 @@ class FormDelegate {
         //     history.push(`/admin/${c.entity_name}/${json_response.id}`);
         // }
     }
+
+    didDelete() {
+    }
 }
 
 export default FormDelegate;

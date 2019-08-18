@@ -190,6 +190,26 @@ class FormController extends BaseController {
     }
 
     //
+    // delete object
+    //
+
+    delete() {
+        const c = this;
+        const rest_client = registry.get('rest_client');
+        const message_controller = registry.get('message_controller');
+
+        rest_client.deleteById(
+            c.entity_name,
+            c.state.entity_id
+        ).then(json => {
+            message_controller.showInfo('ОБъект удален');
+            c.delegate.didDelete();
+        }, error => {
+            message_controller.showException('Ошибка удаления', error);
+        });
+    }
+
+    //
     // widget actions
     //
 
