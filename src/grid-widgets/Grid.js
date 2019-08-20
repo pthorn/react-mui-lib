@@ -13,7 +13,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 import Checkbox from '@material-ui/core/Checkbox';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import ColumnHeader from './ColumnHeader';
 import Pagination from './Pagination';
@@ -48,8 +48,10 @@ function Cell({row, col_config}) {
 class Grid extends React.Component {
     render() {
         const {
-            controller, columns,
+            controller,
+            columns,
             padding = "none",
+            minWidth = 700,
             enableSelection = false,
             isRowSelected, isRowDisabled,
             onRowCheckboxChanged,
@@ -70,47 +72,47 @@ class Grid extends React.Component {
 
         const rows = controller.getRowsForDisplay();
 
-        return <Table padding={padding}>
-            <TableHead>
-                <TableRow>
-                    {enableSelection &&
-                        <TableCell padding="checkbox">
-                            <Checkbox checked={false}
-                                      disabled={true}
-                                      onChange={onHeaderCheckboxChanged}/>
-                        </TableCell>
-                    }
-                    {columns.map((col_config, key) =>
-                        (col_config.include_if || col_config.include_if === undefined) ?
-                        <ColumnHeader key={key}
-                                      col_config={col_config}
-                                      controller={controller} />
-                        : null
-                    )}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {rows.map((row, key) => <TableRow key={key}>
-                    {enableSelection &&
-                        <TableCell padding="checkbox">
-                            <Checkbox checked={isRowSelected(row)}
-                                      disabled={isRowDisabled(row)}
-                                      onChange={onRowCheckboxChanged.bind(null, row)} />
-                        </TableCell>
-                    }
-                    {columns.map((col_config) =>
-                        (col_config.include_if || col_config.include_if === undefined) ?
-                        <Cell key={col_config.key}
-                              row={row}
-                              col_config={col_config} />
-                        : null
-                    )}
-                </TableRow>)}
-            </TableBody>
-            {controller.hasPagination() &&
-                <Pagination />
-            }
-        </Table>;
+        return <div style={{width: '100%', overflowX: 'auto'}}> 
+            <Table padding={padding} style={{minWidth}}>
+                <TableHead>
+                    <TableRow>
+                        {enableSelection &&
+                            <TableCell padding="checkbox">
+                                <Checkbox checked={false}
+                                        disabled={true}
+                                        onChange={onHeaderCheckboxChanged}/>
+                            </TableCell>
+                        }
+                        {columns.map((col_config, key) =>
+                            (col_config.include_if || col_config.include_if === undefined) &&
+                            <ColumnHeader key={key}
+                                          col_config={col_config}
+                                          controller={controller} />
+                        )}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row, key) => <TableRow key={key}>
+                        {enableSelection &&
+                            <TableCell padding="checkbox">
+                                <Checkbox checked={isRowSelected(row)}
+                                        disabled={isRowDisabled(row)}
+                                        onChange={onRowCheckboxChanged.bind(null, row)} />
+                            </TableCell>
+                        }
+                        {columns.map((col_config) =>
+                            (col_config.include_if || col_config.include_if === undefined) &&
+                            <Cell key={col_config.key}
+                                  row={row}
+                                  col_config={col_config} />
+                        )}
+                    </TableRow>)}
+                </TableBody>
+                {controller.hasPagination() &&
+                    <Pagination />
+                }
+            </Table>
+        </div>;
     }
 
     getChildContext() {
@@ -124,6 +126,7 @@ Grid.propTypes = {
     controller: PropTypes.object.isRequired,
     columns: PropTypes.array.isRequired,
     padding: PropTypes.string,
+    minWidth: PropTypes.number,
     enableSelection: PropTypes.bool,
     isRowSelected: PropTypes.func,
     isRowDisabled: PropTypes.func,

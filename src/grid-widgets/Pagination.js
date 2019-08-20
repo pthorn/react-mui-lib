@@ -24,8 +24,7 @@ class Pagination extends React.Component {
                                  labelDisplayedRows={({from, to, count}) => `${from}-${to} из ${count}`}
                                  labelRowsPerPage={'Показывать:'}
                                  onChangePage={c.onClickPage.bind(c)}
-                                 onChangeRowsPerPage={c.onSetRowsPerPage.bind(c)}>
-                </TablePagination>
+                                 onChangeRowsPerPage={c.onSetRowsPerPage.bind(c)}/>
                 <td>
                     <Tooltip title="Обновить">
                         <IconButton onClick={() => controller._request()}>
