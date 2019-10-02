@@ -45,7 +45,7 @@ function Cell({row, col_config}) {
  * const controller = new GridController();
  * <Grid controller={controller} />
  */
-class Grid extends React.Component {
+export class Grid extends React.Component {
     render() {
         const {
             controller,
