@@ -51,14 +51,18 @@ const styles = theme => ({
     content: {
         backgroundColor: theme.palette.background.default,
         width: '100%',
-        padding: theme.spacing.unit * 3,
+        padding: '0',
         height: 'calc(100% - 56px)',
         marginTop: 56,
         [theme.breakpoints.up('sm')]: {
+            padding: theme.spacing.unit * 3,
             height: 'calc(100% - 64px)',
             marginTop: 64,
         },
     },
+    grow: {
+        flexGrow: 1,
+    }
 });
 
 class ResponsiveDrawer extends React.Component {
@@ -93,7 +97,10 @@ class ResponsiveDrawer extends React.Component {
                                 className={classes.navIconHide}>
                                 <MenuIcon/>
                             </IconButton>
-                            <Typography variant="title" color="inherit" noWrap>
+                            <Typography variant="h6"
+                                        color="inherit"
+                                        noWrap
+                                        className={classes.grow}>
                                 {title}
                             </Typography>
                         </Toolbar>
