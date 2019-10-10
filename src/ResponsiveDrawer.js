@@ -75,7 +75,7 @@ class ResponsiveDrawer extends React.Component {
     };
 
     render() {
-        const {title, classes, theme, drawerContent, children} = this.props;
+        const {title, drawerContent, ToolbarContent, classes, theme, children} = this.props;
 
         const drawer = (
             <div>
@@ -103,6 +103,9 @@ class ResponsiveDrawer extends React.Component {
                                         className={classes.grow}>
                                 {title}
                             </Typography>
+                            { ToolbarContent &&
+                                <ToolbarContent />
+                            }
                         </Toolbar>
                     </AppBar>
                     <Hidden mdUp>
@@ -142,9 +145,9 @@ class ResponsiveDrawer extends React.Component {
 
 ResponsiveDrawer.propTypes = {
     title: PropTypes.string,
+    drawerContent: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
-    drawerContent: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, {withTheme: true})(ResponsiveDrawer);
