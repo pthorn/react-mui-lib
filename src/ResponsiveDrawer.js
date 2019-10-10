@@ -141,6 +141,13 @@ class ResponsiveDrawer extends React.Component {
             </div>
         );
     }
+
+    // ref API
+    close() {
+        const c = this;
+
+        c.setState({mobileOpen: false});
+    }
 }
 
 ResponsiveDrawer.propTypes = {
