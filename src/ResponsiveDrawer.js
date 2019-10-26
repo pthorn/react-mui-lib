@@ -39,6 +39,9 @@ const styles = theme => ({
             display: 'none',
         },
     },
+    drawer: {
+        height: '100vh'
+    },
     drawerHeader: theme.mixins.toolbar,
     drawerPaper: {
         width: 250,
@@ -125,12 +128,12 @@ class ResponsiveDrawer extends React.Component {
                     </Hidden>
                     <Hidden smDown implementation="css">
                         {/*TODO full height*/}
-                        <Drawer
-                            variant="permanent"
-                            open
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}>
+                        <Drawer variant="permanent"
+                                open
+                                classes={{
+                                    root: classes.drawer,
+                                    paper: classes.drawerPaper
+                                }}>
                             {drawer}
                         </Drawer>
                     </Hidden>
