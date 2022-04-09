@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "moment": "^2.22.2"
+    "moment": "^2.29.2"
   }
 }
